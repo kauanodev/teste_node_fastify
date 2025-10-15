@@ -2,7 +2,7 @@ import type { User, UserRepository } from "../interfaces/users.interface.ts";
 import type { CreateUser, GetUserByEmail, GetUserById, UpdateUser } from "../interfaces/users.interface.ts";
 
 
-class UserRepositoryPrisma implements UserRepository {
+export class UserRepositoryPrisma implements UserRepository {
  
     createUser(data: CreateUser): Promise<User> {
         throw new Error("Method not implemented.");

@@ -14,16 +14,17 @@ model User{
   email String @unique
   date_created DateTime @default(now())
   date_updated DateTime @updatedAt
-
+  Contacts Contacts[]//Linked list of contacts
   @@map("users")
 }
 
 model Contacts{
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  phone String @unique
-
+  id     String @id @default(uuid())
+  name   String
+  email  String @unique
+  phone  String @unique
+  userId String
+  user  User @relation(fields: [userId],references: [id])//Foreign key to user
   @@map("contacts")
 
 }

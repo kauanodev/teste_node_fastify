@@ -14,11 +14,18 @@ import type { CreateUser, GetUserByEmail, GetUserById, UpdateUser } from "../int
         });
         return result;
     }
+
+
     getUserById(data: GetUserById): Promise<User | null> {
         throw new Error("Method not implemented.");
     }
-    getUserByEmail(data: GetUserByEmail): Promise<User | null> {
-        throw new Error("Method not implemented.");
+    async getUserByEmail(data: GetUserByEmail): Promise<User | null> {
+       const result = await prisma.user.findUnique({
+        where:{
+            email: data.email
+        }
+       })
+       return result || null;
     }
     deleteUser(id: String): Promise<void> {
         throw new Error("Method not implemented.");

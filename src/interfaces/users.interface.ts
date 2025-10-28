@@ -1,7 +1,9 @@
 export interface User{
     id: string,
     email: string,
-    name: string
+    name: string,
+    date_created: Date,
+    date_updated: Date
 
 }
 
@@ -10,15 +12,15 @@ export interface CreateUser{
     email: string
 }
 export interface GetUserById{
-   id: String
+   id: string
 }
 export interface GetUserByEmail{
-   email: String
+   email: string
 }
 export interface UpdateUser{
-    id: String,
-    name?: String,
-    email?: String
+    id: string,
+    name?: string,
+    email?: string
 }
 export interface UserRepository{
     createUser(data: CreateUser): Promise<User>;
@@ -26,5 +28,6 @@ export interface UserRepository{
     getUserByEmail(data: GetUserByEmail): Promise<User | null>;
     deleteUser(id: String): Promise<void>;
     updateUser(data:UpdateUser): Promise<User>
+    
     
 }

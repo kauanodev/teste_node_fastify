@@ -1,10 +1,10 @@
-import type { Contacts, ContactsRepository } from "../interfaces/contacts.interface.ts";
+import type { Contacts, ContactsRepository, CreateContactDataRecieved } from "../interfaces/contacts.interface.ts";
 import { prisma } from "../database/prisma-client.js";  
-import type { CreateContact, GetContactById, GetContactsByUserId, UpdateContact } from "../interfaces/contacts.interface.ts";       
+import type { GetContactById, GetContactsByUserId, UpdateContact } from "../interfaces/contacts.interface.ts";       
 
 
 class ContactsRepositoryPrisma implements ContactsRepository {
-    async createContact(data: CreateContact): Promise<Contacts>{
+    async createContact(data: CreateContactDataRecieved): Promise<Contacts>{
         const result = await prisma.contacts.create({
             data: {
                 name: data.name,
@@ -15,17 +15,41 @@ class ContactsRepositoryPrisma implements ContactsRepository {
         });
         return result;
     }
-    getContactById(data: GetContactById): Promise<Contacts | null>{
-        throw new Error("Method not implemented.");
-    }
-    getContactsByUserId(data: GetContactsByUserId): Promise<Contacts[]>{
-        throw new Error("Method not implemented.");
+    async findByEmailOrPhone(email: string, phone: string): Promise<Contacts | null>{
+        const result = await prisma.contacts.findFirst({
+            where: {
+                OR: [
+                    { email: email },
+                    { phone: phone }
+                ]
+            }
+        });
+        return result || null;      
+        }
+    
+    async listContactsByUserId(data: GetContactsByUserId): Promise<Contacts[]>{
+        const result = await prisma.contacts.findMany({
+            where: {
+                userId: data.userId
+            }
+        });
+        return result;
     }
     deleteContact(id: String): Promise<void>{
         throw new Error("Method not implemented.");
     }
-    updateContact(data:UpdateContact): Promise<Contacts>{
-        throw new Error("Method not implemented.");
+    async updateContact(data:UpdateContact): Promise<Contacts>{
+       const result = await prisma.contacts.update({
+            where: {
+                id: data.id
+            },
+            data: {
+             name: data.name,
+             email: data.email,
+             phone: data.phone
+            },
+        });
+        return result;  
     }
 }
 

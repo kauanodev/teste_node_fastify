@@ -44,5 +44,10 @@ async updateContact({id, name,phone, email }: UpdateContact): Promise<Contacts>{
         phone});
     return contact;
 }
+
+async deleteContact(id: string): Promise<boolean>{
+    const result = await this.contactsRepository.deleteContact(id);
+    return result;
+}
 }
     //Implement use case methods here

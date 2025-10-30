@@ -47,5 +47,14 @@ export async function contactsRoutes(fastify: FastifyInstance){
             return res.status(500).send({message: "Internal Server Error"});
         }
     })
+    fastify.delete<{Params: {id:string}}>('/:id', async (req, res)=>{
+        const {id} = req.params;
+        try {
+        const data = await contactsUseCase.deleteContact(id);
+        return res.send({deleted: data});}
+        catch (error) {
+            return res.status(500).send({message: "Internal Server Error"});
+        }
+    })
  
 }   

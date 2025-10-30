@@ -35,8 +35,13 @@ class ContactsRepositoryPrisma implements ContactsRepository {
         });
         return result;
     }
-    deleteContact(id: String): Promise<void>{
-        throw new Error("Method not implemented.");
+    async deleteContact(id: string): Promise<boolean>{
+         const result = await prisma.contacts.delete({
+            where: {
+                id: id
+     } });
+
+        return result ? true : false;  
     }
     async updateContact(data:UpdateContact): Promise<Contacts>{
        const result = await prisma.contacts.update({
